@@ -1,0 +1,23 @@
+{
+  "name": "bamazon-mysql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JacksonAliesa/Bamazon-mysql.git"
+  },
+  "author": "Aliesa Jackson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JacksonAliesa/Bamazon-mysql/issues"
+  },
+  "homepage": "https://github.com/JacksonAliesa/Bamazon-mysql#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "mysql": "^2.17.1"
+  }
+}
