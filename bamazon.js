@@ -1,10 +1,10 @@
 var mysql = require('mysql');
+var inquirer = require('inquirer');
 require('dotenv').config();
 
 //making connection to our database
 //test if the connections work
 //connection was successful, make a promt user function
-
 var connection = mysql.createConnection({
 	host: 'localhost',
 
@@ -32,7 +32,7 @@ connection.connect(function(err) {
 function promptUser() {
 	connection.query('SELECT * FROM products', function(err, res) {
 		if (err) throw err;
-		console.log(res);
+		// console.log(res);
 	});
 }
 //end of prompt user function
@@ -41,22 +41,46 @@ function promptUser() {
 //check if) their response is "Q" or "q" run connection.end
 
 //inquirer function
-function userPrompt() {
+function askUser() {
 	inquirer
-		.prompt({
-			name: 'userChoice',
-			message: 'What is the ID of the product?',
-			type: 'input'
-		})
-		.then(function(userResponse) {});
-}
+		.prompt(
+			{
+				name: 'itemID',
+				message: 'What is the ID of the product?',
+				type: 'input'
+			},
+			{
+				name: 'quantity',
+				message: 'How many would you like to purchase?',
+				type: 'input'
+			}
+		)
+		.then(function(promptResponse) {
+			//3-else)query the DB to check if the ID# corresponds to an existing ID in the products
+			// 3a)select * from products where ID = user response
+			var productID = promptResponse.itemID;
+			console.log(productID);
 
-//3-else)query the DB to check if the ID# corresponds to an existing ID in the products
-// 3a)select * from products where ID = user response
+			connection.query('SELECT * FROM products WHERE id = ' + productID, function(err, res) {
+				if (err) throw err;
+				console.log(res);
+				//check if product is aval.
+				//set up for loop to go through results retrieved from the DB
+				for (var i = 0; i < res.length; i++) {
+					if (products.id === productID) {
+						console.log;
+					}
+					console.log(res[i].id);
+				}
+			});
+			// make variables for the response//
+		});
+}
+//end of askUser function
+askUser();
+
 //4) once we get a response from database, check if the length of the response is > 0
 //4a) if not tell user the item does not exist and call the promptUser function again (kinda like recursion)
-
-//make var for ID + user response
 
 //5) use inquirer again to ask the user for how many they want
 //6) check the quantity from the DB query response, see if it's >= the # that the user wants (if statement)
