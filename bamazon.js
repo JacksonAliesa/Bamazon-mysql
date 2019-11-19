@@ -56,6 +56,7 @@ function askUser() {
 		.then(function(promptResponse) {
 			var productID = promptResponse.itemID;
 			var productQuantity = promptResponse.quantity;
+			// var itemPrice = parseFloat(price);
 			
 
 			//3-else)query the DB to check if the ID# corresponds to an existing ID in the products
@@ -76,8 +77,8 @@ function askUser() {
 					[newStockQuantity, productID ], function(err, res){
 						console.log(err)
 						
-						console.log("Sucessful! The item with the ID of " + productID + " is in stock. There are " + newStockQuantity + " avaliable.")
-						console.log("The total cost is  $")
+						console.log("Sucessful! The item with the ID of " + productID + " is in stock. There are " + oldQuant + " avaliable.")
+						console.log("The total cost is  $");
 						// promptUser();
 					})
 					
@@ -101,14 +102,3 @@ function askUser() {
 }
 //end of askUser function
 
-
-//5) use inquirer again to ask the user for how many they want
-//6) check the quantity from the DB query response, see if it's >= the # that the user wants (if statement)
-//6a) if the user request is > the aval quantity tell the user it is not in stock and cal prompt user function again
-
-//7)if there are enough in stock, calculate what the new quantity will be by subtracting the users purchase quantity from the current quantity(store this value in a variable)
-//7a) query the DB to update the quantity using UPDATE quantity to new quantity where ID is the ID the user chose
-//7b) tell the user their purchase was successful, and tell them how much they paid
-//7c) multiply the quantity by the price of the product
-
-//8) call promptUser again

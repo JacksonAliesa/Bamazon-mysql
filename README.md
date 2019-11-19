@@ -1,1 +1,5 @@
 # Bamazon-mysql
+
+What is Bamazon?
+
+Bamazon is an application that is set up like an electronic online store. The store's inventory is displayed on a table that the user can view in the terminal. The table shows the item's ID, product name, department name, price, and the stock quantity. The user is then prompted with a statement advising them to enter the item ID # for the item they would like to purchase. If the item ID matches an item ID that the store carries the user's request will go through sucessfully. If not, they will be notified that "the item does not exist". They are then asked "How many of these items would you like to purchase". If the succesfully identified item ID is in stock the user will be notified that their request is successful, and it will let them know that the item is in stock, how many are avaliable, and the total cost. Otherwise, the user will be alerted that the item is not in stock.
