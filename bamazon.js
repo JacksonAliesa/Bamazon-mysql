@@ -23,64 +23,83 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
 	if (err) throw err;
 	console.log('connected as id ' + connection.threadId);
+	//this function will display all of the items aval in the bamazon store for user to see
 	promptUser();
 });
-
-//customer vew
-//In promptUser function
-// 1- display the aval products with their ID #'s - show your inventory from DB
+//In promptUser function it will display the aval products with their ID #'s - show your inventory from DB
 function promptUser() {
 	connection.query('SELECT * FROM products', function(err, res) {
 		if (err) throw err;
-		// console.log(res);
+		console.table(res);
+		askUser();
 	});
 }
 //end of prompt user function
 
-//2 - Use inquirer to ask the user for their ID# of the product they want
-//check if) their response is "Q" or "q" run connection.end
-
 //inquirer function
+//2 - Use inquirer to ask the user for their ID# of the product they want
 function askUser() {
 	inquirer
-		.prompt(
+		.prompt([
 			{
+				//2 - Use inquirer to ask the user for their ID# of the product they want
 				name: 'itemID',
-				message: 'What is the ID of the product?',
+				message: 'Please enter the ID of the product you would like to purchase: [Q to quit]',
 				type: 'input'
 			},
 			{
 				name: 'quantity',
-				message: 'How many would you like to purchase?',
+				message: 'How many would you like to purchase? [Q to quit]',
 				type: 'input'
 			}
-		)
+		])
 		.then(function(promptResponse) {
+			//check if) their response is "Q" or "q" run connection.end
+			var productID = promptResponse.itemID;
+			var productQuantity = promptResponse.quantity;
+
 			//3-else)query the DB to check if the ID# corresponds to an existing ID in the products
 			// 3a)select * from products where ID = user response
-			var productID = promptResponse.itemID;
-			console.log(productID);
-
+			console.log("Product ID: " + productID);
+			console.log("Quantity: " + productQuantity);
+		
 			connection.query('SELECT * FROM products WHERE id = ' + productID, function(err, res) {
 				if (err) throw err;
-				console.log(res);
-				//check if product is aval.
-				//set up for loop to go through results retrieved from the DB
-				for (var i = 0; i < res.length; i++) {
-					if (products.id === productID) {
-						console.log;
-					}
-					console.log(res[i].id);
+				if(res.length > 0) {
+					console.log(res);
+                if(res[0].stockQuantity >= productQuantity){
+					var oldQuant = res[0].stockQuantity;
+					var newStockQuantity = res[0].stockQuantity - productQuantity;
+					console.log("New quant:" + newStockQuantity);
+					console.log("Old: " + oldQuant)
+					connection.query("UPDATE products SET stockQuantity = ? WHERE id = ?",
+					[ newStockQuantity, productID ], function(err, res){
+						console.log(err)
+						
+						console.log("Sucessful! The item with the ID of " + productID + " is in stock. There are " + newStockQuantity + " avaliable")
+						promptUser();
+					})
+					
+
 				}
+				else if (res[0].stockQuantity < productQuantity) {
+					console.log("Sorry, the item with the ID of " + productID + " is not in stock")
+					promptUser();
+
+				}
+	
+				} else{
+						console.log('Item does not exist!');
+						promptUser();
+					}
+				
 			});
-			// make variables for the response//
+
+			
 		});
 }
 //end of askUser function
-askUser();
 
-//4) once we get a response from database, check if the length of the response is > 0
-//4a) if not tell user the item does not exist and call the promptUser function again (kinda like recursion)
 
 //5) use inquirer again to ask the user for how many they want
 //6) check the quantity from the DB query response, see if it's >= the # that the user wants (if statement)
