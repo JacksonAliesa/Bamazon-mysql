@@ -30,6 +30,7 @@ connection.connect(function(err) {
 function promptUser() {
 	connection.query('SELECT * FROM products', function(err, res) {
 		if (err) throw err;
+	
 		console.table(res);
 		askUser();
 	});
@@ -67,7 +68,7 @@ function askUser() {
 			connection.query('SELECT * FROM products WHERE id = ' + productID, function(err, res) {
 				if (err) throw err;
 				if(res.length > 0) {
-					console.log(res);
+					console.table(res);
                 if(res[0].stockQuantity >= productQuantity){
 					var oldQuant = res[0].stockQuantity;
 					var newStockQuantity = res[0].stockQuantity - productQuantity;
