@@ -44,19 +44,19 @@ function askUser() {
 			{
 				//2 - Use inquirer to ask the user for their ID# of the product they want
 				name: 'itemID',
-				message: 'Please enter the ID of the product you would like to purchase: [Q to quit]',
+				message: 'Please enter the ID of the product you would like to purchase:',
 				type: 'input'
 			},
 			{
 				name: 'quantity',
-				message: 'How many would you like to purchase? [Q to quit]',
+				message: 'How many would you like to purchase?',
 				type: 'input'
 			}
 		])
 		.then(function(promptResponse) {
-			//check if) their response is "Q" or "q" run connection.end
 			var productID = promptResponse.itemID;
 			var productQuantity = promptResponse.quantity;
+			
 
 			//3-else)query the DB to check if the ID# corresponds to an existing ID in the products
 			// 3a)select * from products where ID = user response
@@ -70,20 +70,21 @@ function askUser() {
                 if(res[0].stockQuantity >= productQuantity){
 					var oldQuant = res[0].stockQuantity;
 					var newStockQuantity = res[0].stockQuantity - productQuantity;
-					console.log("New quant:" + newStockQuantity);
-					console.log("Old: " + oldQuant)
+					// console.log("New quant:" + newStockQuantity);
+					// console.log("Old: " + oldQuant)
 					connection.query("UPDATE products SET stockQuantity = ? WHERE id = ?",
-					[ newStockQuantity, productID ], function(err, res){
+					[newStockQuantity, productID ], function(err, res){
 						console.log(err)
 						
-						console.log("Sucessful! The item with the ID of " + productID + " is in stock. There are " + newStockQuantity + " avaliable")
-						promptUser();
+						console.log("Sucessful! The item with the ID of " + productID + " is in stock. There are " + newStockQuantity + " avaliable.")
+						console.log("The total cost is  $")
+						// promptUser();
 					})
 					
 
 				}
 				else if (res[0].stockQuantity < productQuantity) {
-					console.log("Sorry, the item with the ID of " + productID + " is not in stock")
+					console.log("Sorry, the item with the ID of " + productID + " is not in stock.")
 					promptUser();
 
 				}
