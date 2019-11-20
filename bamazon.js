@@ -72,15 +72,15 @@ function askUser() {
                 if(res[0].stockQuantity >= productQuantity){
 					var oldQuant = res[0].stockQuantity;
 					var newStockQuantity = res[0].stockQuantity - productQuantity;
+					
 					// console.log("New quant:" + newStockQuantity);
 					// console.log("Old: " + oldQuant)
 					connection.query("UPDATE products SET stockQuantity = ? WHERE id = ?",
 					[newStockQuantity, productID ], function(err, res){
 						console.log(err)
 						
-						console.log("Sucessful! The item with the ID of " + productID + " is in stock. There are " + oldQuant + " avaliable.")
-						console.log("The total cost is  $");
-						// promptUser();
+						console.log("Successful! The item with the ID of " + productID + " is in stock. There are " + oldQuant + " avaliable.")
+						console.log("The total cost is  $" + itemPrice);
 					})
 					
 
