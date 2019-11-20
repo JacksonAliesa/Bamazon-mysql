@@ -80,7 +80,8 @@ function askUser() {
 						console.log(err)
 						
 						console.log("Successful! The item with the ID of " + productID + " is in stock. There are " + oldQuant + " avaliable.")
-						console.log("The total cost is  $" + itemPrice);
+						//Need to figure out why the total cost is undefined
+						// console.log("The total cost is  $");
 					})
 					
 
